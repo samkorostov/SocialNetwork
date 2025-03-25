@@ -19,7 +19,7 @@ public class PostService {
     public final UserRepository userRepository;
 
     public Post createPost(Long userId, String content) {
-        User author = userRepository.findById(userId).orElseThrow();
+        User author = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Post post = new Post();
         post.setContent(content);
         post.setAuthor(author);

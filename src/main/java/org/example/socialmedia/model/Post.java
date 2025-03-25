@@ -23,7 +23,6 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    @JsonIgnore
     private User author;
 
     @ManyToMany(mappedBy = "likedPosts")

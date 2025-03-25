@@ -7,7 +7,10 @@ import org.example.socialmedia.dto.RegisterRequest;
 import org.example.socialmedia.dto.TokenResponse;
 import org.example.socialmedia.model.User;
 import org.example.socialmedia.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +19,19 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        User user = userService.findByUsername(userDetails.getUsername());
+
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register(@RequestBody RegisterRequest registerRequest) {

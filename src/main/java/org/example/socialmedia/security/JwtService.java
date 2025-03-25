@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,7 +20,8 @@ import java.util.Date;
 
 @Component
 public class JwtService {
-    private final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key KEY = Keys.hmacShaKeyFor("my-very-secure-and-long-dev-secret-key-1234".getBytes(StandardCharsets.UTF_8));
+
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
     public String generateToken(User user) {
@@ -40,7 +42,25 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean isTokenValid(String token, User user) {
-        return extractUsername(token).equals(user.getUsername());
+    public boolean validateToken(String token, UserDetails userDetails) {
+        try {
+            String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
     }
 }

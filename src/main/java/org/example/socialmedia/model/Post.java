@@ -1,5 +1,7 @@
 package org.example.socialmedia.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,12 +25,13 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonIgnoreProperties({"posts", "likedPosts"})
     private User author;
 
     @ManyToMany(mappedBy = "likedPosts")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnore
+    @JsonIgnoreProperties({"posts", "likedPosts"})
     private Set<User> likedBy = new HashSet<>();
 
     private int likes = 0;

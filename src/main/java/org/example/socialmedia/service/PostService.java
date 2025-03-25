@@ -24,6 +24,7 @@ public class PostService {
         post.setContent(content);
         post.setAuthor(author);
         post.setCreatedAt(LocalDateTime.now());
+        Post savedPost = postRepository.save(post);
         return postRepository.save(post);
     }
 
@@ -31,7 +32,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void likeOrUnlikePost(Long userId, Long postId) {
+    public Post likeOrUnlikePost(Long userId, Long postId) {
         User user = userRepository.findById(userId).orElseThrow();
         Post post = postRepository.findById(postId).orElseThrow();
 
@@ -51,8 +52,7 @@ public class PostService {
         }
 
         userRepository.save(user);
-        postRepository.save(post);
-
+        return postRepository.save(post);
     }
 
 }

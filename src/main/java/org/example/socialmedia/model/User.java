@@ -1,4 +1,5 @@
 package org.example.socialmedia.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.example.socialmedia.model.Post;
 import lombok.*;
@@ -39,6 +40,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
     @ManyToMany

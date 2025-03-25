@@ -23,7 +23,6 @@ public class PostService {
         Post post = new Post();
         post.setContent(content);
         post.setAuthor(author);
-        post.setCreatedAt(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
         return postRepository.save(post);
     }

@@ -21,7 +21,7 @@ public class PostResponse {
      * Creates a post response from a Post entity
      * @param post
      * @param currentUserId
-     * @return
+     * @return new CommentResponse
      */
     public static PostResponse fromEntity(Post post, Long currentUserId) {
         boolean likedByCurrentUser = post.getLikedBy().stream()

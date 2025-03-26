@@ -41,7 +41,7 @@ public class PostService {
         if (likedPosts.contains(post)) {
             // If user already liked -> Unlike
             likedPosts.remove(post);
-            likedBy.remove(post);
+            likedBy.remove(user);
             post.setLikes(post.getLikes() - 1);
         } else {
             // If user has not liked -> Like

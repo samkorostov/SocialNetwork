@@ -21,7 +21,7 @@ A Twitter-clone project built to learn about developing full-stack applications 
 
 ### Roadmap: 
 - [x] Implement basic functionality
-- [ ] Fix bugs related to like counters and post refreshing
+- [x] Fix bugs related to like counters and post refreshing
 - [ ] Implement user profiles, and ability to follow other users
 - [ ] Add commenting on posts
 - [ ] Add image functinality for both posts and profile pictures (probably use S3)
